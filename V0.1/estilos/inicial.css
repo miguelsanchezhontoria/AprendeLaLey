@@ -1,0 +1,113 @@
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #c7b446;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #776d26;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    .descripcion {
+      text-align: center;
+      padding: 1rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 1.2rem;
+    }
+
+    .botones {
+      display: flex;
+      flex-direction: column;  /* Mostrar las filas en columna */
+      align-items: center;     /* Centrar cada fila horizontalmente */
+      gap: 0.5rem;
+      margin-top: 2rem;
+    }
+
+    .botones a {
+      background-color: #3498db;
+      color: white;
+      padding: 1rem 2rem;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .botones a:hover {
+      background-color: #2980b9;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: 1rem;
+    }
+    
+    .fila-boton {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .boton-huecos {
+      background-color: #3498db;
+      color: white;
+      padding: 0.5rem 1rem; /* más pequeño que el original */
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      font-size: 1rem;
+    }
+
+    /* Hover para el botón */
+    .boton-huecos:hover {
+      background-color: #2980b9;
+    }
+    
+    /* Contenedor del tooltip */
+    .tooltip-container {
+      position: relative;
+      display: inline-block;
+    }
+    
+    /* Texto del tooltip */
+    .tooltip-text {
+      visibility: hidden;
+      width: 260px;
+      background-color: #333;
+      color: #fff;
+      text-align: left;
+      border-radius: 6px;
+      padding: 0.5rem;
+      position: absolute;
+      z-index: 1;
+      top: 110%; /* debajo del botón */
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      font-size: 0.9rem;
+    }
+    
+    /* Mostrar el tooltip al hacer hover */
+    .tooltip-container:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }

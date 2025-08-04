@@ -1,0 +1,2 @@
+Modo huecos constitución española completado.
+Pantalla inicial también, con 2 modos y varios botones (solo implementado el de antes).
