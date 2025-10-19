@@ -1,0 +1,5 @@
+Modo huecos "completado" en Constitución, CodCiv y CodPen con el selector "completado".
+Modo partido "comenzado" con el selector "completado". La lógica de las mitades se debe mejorar, tildes, mayúsculas, la solución al final, 
+sistemas de puntuación...
+Pantalla inicial también, con 2 modos y 3 textos legales.
+Constitución, Código Civil y Código Penal los 3 scripts "hechos".

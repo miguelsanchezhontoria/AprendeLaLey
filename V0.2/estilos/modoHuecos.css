@@ -1,0 +1,349 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #6f3b80;
+  margin: 0;
+  padding: 40px 20px;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  background-color: #814c9f;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease-in-out;
+  color:white;
+}
+
+h1 {
+  font-size: 2rem;
+  color: white;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  color: white;
+}
+
+select,
+input[type="text"] {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border 0.2s ease;
+}
+
+input[type="text"]:focus {
+  border-color: #1e88e5;
+  outline: none;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #1e88e5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.comprobar {
+  margin-top: 30px; /* Más separación del texto */
+}
+
+button:hover {
+  background-color: #1565c0;
+}
+
+.resultado {
+  margin-top: 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+}
+
+.temporizador-circular {
+  width: 100px;
+  height: 100px;
+  margin: 20px auto;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+}
+
+.fondo {
+  fill: none;
+  stroke: #eee;
+  stroke-width: 3.8;
+}
+
+.progreso {
+  fill: none;
+  stroke-width: 2.5;
+  transition: stroke 0.3s ease;
+}
+
+.tiempo-texto {
+  font-size: 0.6em;
+  fill: #333;
+}
+
+input[type="text"] {
+  width: 120px;
+  margin: 4px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.reintentar-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.reintentar-btn:hover {
+  background-color: #a71d2a;
+}
+
+.sugerencias-container {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  width: 240px;
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  z-index: 9999;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+  max-height: 180px;
+  opacity: 1;
+}
+
+.sugerencias-container.plegado {
+  max-height: 40px;
+  opacity: 0.85;
+}
+
+.sugerencias-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #dedede;
+  padding: 8px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  position: relative; /* necesario para posicionar el texto flotante respecto al header */
+}
+
+.sugerencias-header strong {
+  font-size: 14px;
+}
+
+.info-icon {
+  width: 20px;
+  height: 20px;
+  background-color: #1e88e5;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 20px;
+  font-weight: bold;
+  font-size: 14px;
+  display: inline-block;
+  cursor: pointer;
+  position: relative; /* importante para el tooltip */
+}
+
+.info-icon::after {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 125%; /* justo encima del icono */
+  background-color: rgba(51, 51, 51, 0.95);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: normal;
+  width: 240px;
+  font-size: 0.85em;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.sugerencias-form {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.sugerencias-form textarea {
+  resize: none;
+  height: 60px;
+  margin-bottom: 8px;
+  padding: 6px;
+  font-size: 13px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.sugerencias-form button {
+  background-color: #1e88e5;
+  color: white;
+  padding: 6px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.mensaje-exito {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background-color: #e6ffe6;
+  color: #2a7a2a;
+  border: 1px solid #9dd79d;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.flecha-volver {
+  display: inline-flex;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  text-decoration: none;
+  color: #333;
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+  overflow: hidden;
+  user-select: none;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.flecha-volver span {
+  font-size: 42px;
+  line-height: 1;
+  display: inline-block;
+  margin-top: -2px;
+}
+
+.flecha-volver:hover {
+  background-color: #d2c9c9;
+}
+
+/*para el estilo de la tabla del final*/
+table.resumen {
+  width: 100%;
+  max-width: 800px;
+  margin: 2rem auto;
+  border-collapse: collapse;
+  font-family: 'Segoe UI', sans-serif;
+  border: 2px solid white; /* ✅ bordes visibles */
+  box-shadow: 0 0 0 2px white; /* ✅ refuerzo visual */
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+table.resumen th,
+table.resumen td {
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid white; /* ✅ bordes internos blancos */
+  color: white; /* ✅ texto blanco por defecto */
+  font-size: 1rem;
+}
+
+table.resumen tbody tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+table.resumen tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/*ampliar el tamaño de las letras*/
+#ejercicio p {
+  font-size: 1.25rem; /* o prueba con 1.3rem si quieres más grande */
+  line-height: 1.6;
+  font-weight: 400;
+  color: white; /* si estás sobre fondo oscuro */
+}
+
+.btn-volver {
+  display: block;
+  margin: 2rem auto;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  background-color: #1e88e5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-volver:hover {
+  background-color: #1565c0;
+  /* tono más oscuro al pasar el ratón */
+}
+
+/*Para el mensaje que se muestra al pasar el cursor del ratón sobre el botón Volver cuando se muestra la tabla*/
+.tooltip {
+  position: relative;
+  cursor: pointer;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 6px;
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  width: 280px;
+  font-size: 0.9rem;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+

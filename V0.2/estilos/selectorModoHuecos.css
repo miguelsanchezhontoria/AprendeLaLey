@@ -1,0 +1,268 @@
+body {
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background: black;
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+
+.contenedor {
+  max-width: 800px;
+  margin: 2rem auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin-bottom: 1rem; /* ✅ esto acerca el footer al bloque blanco */
+}
+
+/* Títulos */
+h1,
+h2 {
+  text-align: center;
+  color: #1a237e;
+}
+
+/* Bloques de selección centrados */
+.bloque-seleccion {
+  display: flex;
+  align-items: center;
+  /* Alinea verticalmente etiqueta y selector */
+  justify-content: center;
+  /* Centra el bloque completo */
+  gap: 0.8rem;
+  /* Espacio entre los elementos */
+  margin: 1rem 0;
+}
+
+/* Etiquetas de los selects */
+.bloque-seleccion label {
+  font-weight: 500;
+  min-width: 180px;
+  /* Tamaño fijo para alinear bien las etiquetas */
+  text-align: right;
+  /* Etiqueta alineada con el select */
+}
+
+/* Selects más compactos */
+.bloque-seleccion select {
+  width: 60%;
+  max-width: 360px;
+  padding: 0.4rem 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.bloque-seleccion.botones {
+  justify-content: center;
+  /* Centra ambos botones */
+  gap: 1.5rem;
+  /* Más separación entre ellos */
+}
+
+/* Botones de añadir y limpiar */
+.bloque-seleccion .btn {
+  font-size: 0.9rem;
+  padding: 0.8rem 1.4rem;
+}
+
+.bloque-seleccion .btn+.btn {
+  margin-left: 1.2rem;
+}
+
+/* Agrupación centrada de botones */
+.bloque-seleccion button {
+  display: inline-block;
+}
+
+.bloque-seleccion:last-of-type {
+  flex-direction: row;
+  justify-content: center;
+}
+
+/* Botones generales */
+.btn {
+  background-color: #1e88e5;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  background-color: #1565c0;
+}
+
+.btn.rojo {
+  background-color: #e53935;
+}
+
+.btn.rojo:hover {
+  background-color: #c62828;
+}
+
+.btn.grande {
+  font-size: 1.3rem;
+  padding: 0.8rem 1.4rem;
+  display: block;
+  margin: 1.5rem auto;
+}
+
+/* Lista de artículos seleccionados */
+.bloque-lista {
+  margin-top: 1.5rem;
+}
+
+#listaSeleccionados {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 400px;
+} 
+
+#listaSeleccionados li {
+  background: #a0b3bc;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.4rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 200px;
+  width: 100%;
+}
+
+.btn-eliminar {
+  background: #ef5350;
+  border: none;
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-eliminar:hover {
+  background: #d32f2f;
+}
+
+/* Flecha volver */
+.flecha-volver {
+  display: inline-flex;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  text-decoration: none;
+  color: #333;
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+  overflow: hidden;
+}
+
+.flecha-volver span {
+  font-size: 42px;
+  line-height: 1;
+  display: inline-block;
+  margin-top: -2px;
+}
+
+.flecha-volver:hover {
+  background-color: #d2c9c9;
+}
+
+/* Tooltip */
+.tooltip {
+  position: relative;
+  cursor: help;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 6px;
+  position: absolute;
+  bottom: 125%;
+  left: 0;
+  z-index: 1;
+  width: 280px;
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Popup de aviso */
+.popup-aviso {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  z-index: 1000;
+  transition: opacity 0.5s ease;
+}
+
+.popup-aviso.oculto {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Sección del selector de porcentaje centrado */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* Centrado horizontal */
+  gap: 1rem;
+  margin-top: 2.5rem;
+  margin-left: 10rem;
+} 
+
+.controls label {
+  margin-right: 0.1rem;
+  font-weight: 500;
+}
+
+.controls select {
+  max-width: 80px;
+  padding: 0.4rem;
+  font-size: 1rem;
+  border-radius: 6px;
+}
+
+.temporizador {
+  display: flex;
+  align-items: center;
+  gap: -2.5rem;
+}
+
+/* Hacemos más grande el checkbox */
+#activarTemporizador {
+  width: 20px;
+  height: 20px;
+  accent-color: #1e88e5;
+  /* Azul bonito para coincidir con los botones */
+  cursor: pointer;
+}

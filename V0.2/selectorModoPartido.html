@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seleccionar artículos - Modo Mitad</title>
+    <link rel="stylesheet" href="estilos/selectorModoPartido.css">
+</head>
+
+<body>
+
+    <a href="index.html" class="flecha-volver" title="Volver">
+        <span>←</span>
+    </a>
+
+    <div class="contenedor">
+        <h1>Selecciona los artículos que quieres practicar</h1>
+
+        <!-- Selector de título/libro -->
+        <div class="bloque-seleccion">
+            <label for="titulo">Selecciona título / libro:</label>
+            <select id="titulo" onchange="cargarArticulos()">
+                <option value="">— Elige un título o libro —</option>
+            </select>
+        </div>
+
+        <!-- Selector de subtítulo (oculto inicialmente) -->
+        <div class="bloque-seleccion" id="bloqueSubtitulo" style="display:none;">
+            <label for="subtitulo">Selecciona subtítulo:</label>
+            <select id="subtitulo" onchange="cargarArticulosDesdeSubtitulo()">
+                <option value="">— Elige un título —</option>
+            </select>
+        </div>
+
+        <!-- Selector de artículo -->
+        <div class="bloque-seleccion">
+            <label for="articulo">Selecciona un artículo:</label>
+            <select id="articulo">
+                <option value="">— Elige un título o libro primero —</option>
+            </select>
+        </div>
+
+        <!-- Botones de añadir y limpiar -->
+        <div class="bloque-seleccion">
+            <button class="btn" onclick="agregarArticulo()">Añadir artículo</button>
+            <button class="btn rojo" onclick="limpiarLista()">Limpiar lista</button>
+        </div>
+
+        <!-- Lista de artículos seleccionados -->
+        <div class="bloque-lista">
+            <h2>Artículos seleccionados</h2>
+            <h5 style="margin-top: -1.2rem; text-align: center; color: #1a237e;">
+                (Los artículos se mostrarán en el orden en que aparecen, de arriba hacia abajo)
+            </h5>
+            <ul id="listaSeleccionados"></ul>
+        </div>
+
+        <!-- Selector de mitad y temporizador -->
+        <div class="controls">
+            <label for="mitad">Mitad a completar:</label>
+            <select id="mitad">
+                <option value="primera">Primera mitad</option>
+                <option value="segunda">Segunda mitad</option>
+            </select>
+
+            <div class="temporizador tooltip">
+                <input type="checkbox" id="activarTemporizador">
+                <label for="activarTemporizador">
+                    Usar temporizador
+                    <span class="tooltip-text">
+                        Al activar esta opción se mostrará un temporizador durante la realización del ejercicio
+                    </span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Botón comenzar -->
+        <div class="bloque-seleccion">
+            <button class="btn grande" onclick="continuar()">Comenzar</button>
+        </div>
+    </div>
+
+    <footer style="text-align:center; padding: 1rem 0; color:white;">
+        © 2025 Aprende la ley. Todos los derechos reservados.
+    </footer>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const textoLegal = params.get("texto");
+        const tituloPreseleccionado = params.get("titulo");
+        const articulosPreseleccionados = params.get("articulos")?.split(",") || [];
+        const mitadPreseleccionada = params.get("mitad");
+        const temporizadorActivado = params.get("temporizador") === "1";
+        // Código JS igual al del selector huecos, con este cambio en continuar():
+        function continuar() {
+                const titulo = document.getElementById("titulo").value;
+                const seleccionados = Array.from(listaSeleccionados.children).map(li => li.dataset.articulo);
+                const usarTemporizador = document.getElementById("activarTemporizador").checked;
+                const mitad = document.getElementById("mitad").value;
+
+                if (!titulo || seleccionados.length === 0) {
+                    mostrarPopupInicio();
+                    return;
+                }
+
+                const params = new URLSearchParams();
+                params.append("texto", textoLegal);
+                params.append("titulo", titulo);
+                params.append("articulos", seleccionados.join(","));
+                params.append("temporizador", usarTemporizador ? "1" : "0");
+                params.append("mitad", mitad);
+
+                window.location.href = `partido.html?${params.toString()}`;
+        }
+
+
+        //por si una vez en el modo de juego se quiere volver atrás con la flecha
+            function restaurarSeleccion() {
+                const todosArticulos = Object.values(titulosArticulos)
+                    .flatMap(t => Array.isArray(t) ? t : Object.values(t).flat());
+
+                articulosPreseleccionados.forEach(clave => {
+                    if (todosArticulos.includes(clave)) {
+                        const li = document.createElement("li");
+                        li.dataset.articulo = clave;
+                        li.textContent = formatearArticulo(clave);
+
+                        const btnEliminar = document.createElement("button");
+                        btnEliminar.className = "btn-eliminar";
+                        btnEliminar.textContent = "✕";
+                        btnEliminar.onclick = () => li.remove();
+
+                        li.appendChild(btnEliminar);
+                        listaSeleccionados.appendChild(li);
+                    }
+                });
+            }
+
+            //pasar de número normal a romano
+            function numeroRomano(num) {
+                const romanos = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
+                    "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX", "XXI", "XXII", "XXIII", "XXIV", "XXV"];
+                return romanos[num] || num;
+            }
+
+            //formatear el nombre de los articulos en el js
+            function formatearArticulo(clave) {
+                let base = clave.replace(/^art/, "Artículo ");
+                base = base.replace(/punto(\d+)/g, ".$1");
+                base = base.replace(/punto/g, ".");
+                return base;
+            }
+
+            //formatear el nombre de los titulos y libros en el js
+            function formatoTituloClave(clave, listaArticulos) {
+                if (clave.toLowerCase() === "preliminar") {
+                    const rango = calcularRangoArticulos(listaArticulos);
+                    return `Preliminar (${rango})`;
+                }
+                if (clave.toLowerCase() === "final") {
+                    const rango = calcularRangoArticulos(listaArticulos);
+                    return `Final (${rango})`;
+                }
+                const match = clave.match(/^titulo(\d+)(bis)?$/i) || clave.match(/^libro(\d+)(bis)?$/i);
+                if (!match) return clave;
+
+                const num = parseInt(match[1]);
+                const esBis = match[2] ? " bis" : "";
+                const tipo = clave.startsWith("libro") ? "Libro" : "Título";
+
+                const romano = numeroRomano(num);
+                const rango = calcularRangoArticulos(listaArticulos);
+
+                return `${tipo} ${romano}${esBis} (${rango})`;
+            }
+
+            //calcula cuantos articulos tiene un titulo/libro
+            function calcularRangoArticulos(lista) {
+                const extraerInfo = clave => {
+                    const match = clave.match(/^art(\d+)([a-z]*\d*)?$/i);
+                    if (!match) return null;
+                    const numero = parseInt(match[1]);
+                    const sufijo = match[2] || "";
+                    return { numero, sufijo, clave };
+                };
+
+                const articulos = lista
+                    .map(extraerInfo)
+                    .filter(obj => obj !== null)
+                    .sort((a, b) => a.numero - b.numero || a.sufijo.localeCompare(b.sufijo));
+
+                if (articulos.length === 0) return "sin artículos";
+
+                const primero = articulos[0];
+                const ultimo = articulos[articulos.length - 1];
+
+                const todosMismoNumero = articulos.every(a => a.numero === primero.numero);
+                const sufijos = articulos.map(a => a.sufijo);
+                const sufijosUnicos = [...new Set(sufijos)];
+
+                const mostrar = obj => `artículo ${obj.numero}${obj.sufijo ? obj.sufijo.replace("punto", ".") : ""}`;
+
+                // Si todos son del mismo número y no hay sufijos tipo bis, ter, etc.
+                const sufijosSimples = sufijosUnicos.every(s => s === "" || s.startsWith("punto"));
+
+                if (todosMismoNumero && sufijosSimples) {
+                    return mostrar(primero);
+                }
+
+                return `${mostrar(primero)} al ${mostrar(ultimo)}`;
+            }
+
+            //carga el script de los articulos
+            function cargarScriptArticulos(nombreArchivo, callback) {
+                if (mitadPreseleccionada) {
+                    document.getElementById("mitad").value = mitadPreseleccionada;
+                }
+
+                if (temporizadorActivado) {
+                    document.getElementById("activarTemporizador").checked = true;
+                }
+                const script = document.createElement("script");
+                script.src = nombreArchivo;
+                script.onload = callback;
+                script.onerror = () => {
+                    document.body.innerHTML = "<div class='contenedor'><p>Error al cargar los artículos.</p></div>";
+                };
+                document.head.appendChild(script);
+            }
+
+            const tituloSelect = document.getElementById("titulo");
+            const articuloSelect = document.getElementById("articulo");
+            const listaSeleccionados = document.getElementById("listaSeleccionados");
+            
+            function iniciarSelector() {
+                if (!textoLegal || !titulosArticulos) {
+                    document.body.innerHTML = "<div class='contenedor'><p>Error: texto legal no válido.</p></div>";
+                    return;
+                }
+
+                for (const titulo in titulosArticulos) {
+                    const option = document.createElement("option");
+                    option.value = titulo;
+                    const datos = titulosArticulos[titulo];
+                    const lista = Array.isArray(datos)
+                        ? datos
+                        : Object.values(datos).flat();
+
+                    option.textContent = formatoTituloClave(titulo, lista);
+                    tituloSelect.appendChild(option);
+                }
+
+                // ✅ Ahora que los options están listos, asignamos el valor y cargamos artículos
+                if (tituloPreseleccionado) {
+                    tituloSelect.value = tituloPreseleccionado;
+                    cargarArticulos();
+                }
+            }
+
+            function cargarArticulos() {
+                const titulo = tituloSelect.value;
+                const subtituloSelect = document.getElementById("subtitulo");
+                const bloqueSubtitulo = document.getElementById("bloqueSubtitulo");
+                articuloSelect.innerHTML = '<option value="">— Elige un artículo —</option>';
+                subtituloSelect.innerHTML = '<option value="">— Elige un título —</option>';
+                bloqueSubtitulo.style.display = "none";
+
+                const datos = titulosArticulos[titulo];
+
+                if (!datos) return;
+
+                if (Array.isArray(datos)) {
+                    // Estructura plana como "preliminar"
+                    datos.forEach(art => {
+                        const option = document.createElement("option");
+                        option.value = art;
+                        option.textContent = formatearArticulo(art); // ✅ Formato correcto para artículos
+                        articuloSelect.appendChild(option);
+                    });
+                } else {
+                    // Estructura anidada como "libro1" → "titulo1"
+                    bloqueSubtitulo.style.display = "flex";
+                    for (const subtitulo in datos) {
+                        const option = document.createElement("option");
+                        option.value = subtitulo;
+                        const lista = datos[subtitulo];
+                        option.textContent = formatoTituloClave(subtitulo, lista); // ✅ Formato correcto para subtítulos
+                        subtituloSelect.appendChild(option);
+                    }
+                }
+            }
+
+            function cargarArticulosDesdeSubtitulo() {
+                const titulo = tituloSelect.value;
+                const subtitulo = document.getElementById("subtitulo").value;
+                articuloSelect.innerHTML = '<option value="">— Elige un artículo —</option>';
+
+                const datos = titulosArticulos[titulo]?.[subtitulo];
+                if (!datos) return;
+
+                datos.forEach(art => {
+                    const option = document.createElement("option");
+                    option.value = art;
+                    option.textContent = formatearArticulo(art);
+                    articuloSelect.appendChild(option);
+                });
+            }
+
+            //añade un articulo a la lista
+            function agregarArticulo() {
+                const articulo = articuloSelect.value;
+                if (!articulo) return;
+
+                const yaExiste = Array.from(listaSeleccionados.children).some(li => li.dataset.articulo === articulo);
+                if (yaExiste) {
+                    mostrarPopupDuplicado();
+                    return;
+                }
+
+                const li = document.createElement("li");
+                li.dataset.articulo = articulo;
+                li.textContent = formatearArticulo(articulo);
+
+                const btnEliminar = document.createElement("button");
+                btnEliminar.className = "btn-eliminar";
+                btnEliminar.textContent = "✕";
+                btnEliminar.onclick = () => li.remove();
+
+                li.appendChild(btnEliminar);
+                listaSeleccionados.appendChild(li);
+            }
+
+            //elimina todos los articulos de la lista
+            function limpiarLista() {
+                const hayArticulos = listaSeleccionados.children.length > 0;
+                if (listaSeleccionados.children.length === 0) {
+                    mostrarPopupVacio();
+                    return;
+                }
+
+                listaSeleccionados.innerHTML = "";
+            }
+
+            function mostrarPopupInicio() {
+                    const popup = document.getElementById("popupAvisoInicio");
+                    popup.classList.remove("oculto");
+                    setTimeout(() => popup.classList.add("oculto"), 3000);
+                }
+
+                function mostrarPopupDuplicado() {
+                    const popup = document.getElementById("popupAvisoDuplicado");
+                    popup.classList.remove("oculto");
+                    setTimeout(() => popup.classList.add("oculto"), 3000);
+                }
+
+                function mostrarPopupVacio() {
+                    const popup = document.getElementById("popupAvisoVacio");
+                    popup.classList.remove("oculto");
+                    setTimeout(() => popup.classList.add("oculto"), 3000);
+                }
+
+                if (textoLegal === "penal") {
+                        cargarScriptArticulos("scripts/articulosCodPen.js", () => {
+                            const mitadSelect = document.getElementById("mitad");
+                            const temporizadorCheckbox = document.getElementById("activarTemporizador");
+
+                            if (mitadPreseleccionada) {
+                                mitadSelect.value = mitadPreseleccionada;
+                            }
+
+                            if (temporizadorActivado) {
+                                temporizadorCheckbox.checked = true;
+                            }
+
+                            iniciarSelector();
+                            restaurarSeleccion();
+                        });
+                } else if (textoLegal === "civil") {
+                    cargarScriptArticulos("scripts/articulosCodCiv.js", () => {
+                        const mitadSelect = document.getElementById("mitad");
+                        const temporizadorCheckbox = document.getElementById("activarTemporizador");
+
+                        if (mitadPreseleccionada) {
+                            mitadSelect.value = mitadPreseleccionada;
+                        }
+
+                        if (temporizadorActivado) {
+                            temporizadorCheckbox.checked = true;
+                        }
+
+                        iniciarSelector();
+                        restaurarSeleccion();
+                    });
+                } else if (textoLegal === "constitucion") {
+                    cargarScriptArticulos("scripts/articulosConstitucion.js", () => {
+                        const mitadSelect = document.getElementById("mitad");
+                        const temporizadorCheckbox = document.getElementById("activarTemporizador");
+
+                        if (mitadPreseleccionada) {
+                            mitadSelect.value = mitadPreseleccionada;
+                        }
+
+                        if (temporizadorActivado) {
+                            temporizadorCheckbox.checked = true;
+                        }
+
+                        iniciarSelector();
+                        restaurarSeleccion();
+                    });
+                } else {
+                    document.body.innerHTML = "<div class='contenedor'><p>Error: texto legal no válido.</p></div>";
+                }
+    </script>
+
+    <div id="popupAvisoInicio" class="popup-aviso oculto">
+        <p>Selecciona al menos un artículo para comenzar.</p>
+    </div>
+    
+    <div id="popupAvisoDuplicado" class="popup-aviso oculto">
+        <p>Ese artículo ya está en la lista.</p>
+    </div>
+    
+    <div id="popupAvisoVacio" class="popup-aviso oculto">
+        <p>No hay artículos que limpiar.</p>
+    </div>
+</body>
+
+</html>

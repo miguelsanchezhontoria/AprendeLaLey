@@ -1,0 +1,137 @@
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #c7b446;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #776d26;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    .descripcion {
+      text-align: center;
+      padding: 1rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 1.2rem;
+    }
+
+    /*Para las filas de los botones y los distintos botones según el modo*/
+    .boton-grupo {
+      display: flex;
+      gap: 2rem; /* separación entre botones */
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .boton-grupo a {
+      flex: 1 1 auto;
+      text-align: center;
+    }
+
+    .boton-huecos,
+    .boton-mitad {
+      max-width: 200px;
+    }
+
+    .botones {
+      display: flex;
+      flex-direction: column;  
+      align-items: center;    
+      justify-content: center;
+      width: 100%;
+    }
+    
+    .fila-boton {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .fila-boton h2 {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .boton-huecos {
+      background-color: #814c9f;  
+      color: white;
+      padding: 1rem 2rem;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      font-size: 1rem;
+    }
+    
+    .boton-huecos:hover {
+      background-color: #6f3b80; 
+    }
+    
+    .boton-mitad {
+      background-color: #4caf50; 
+      color: white;
+      padding: 1rem 2rem;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      font-size: 1rem;
+    }
+    
+    .boton-mitad:hover {
+      background-color: #388e3c; 
+    }
+
+    /* 2025 Aprende la ley. Todos los derechos reservados. */
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #4f4b4b;
+      margin-top: 1rem;
+    }
+    
+    /* Contenedor del tooltip, los mensajes de ayuda sobre los botones al pasar el cursor */
+    .tooltip-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .tooltip-text {
+      visibility: hidden;
+      width: 260px;
+      background-color: #333;
+      color: #fff;
+      text-align: left;
+      border-radius: 6px;
+      padding: 0.5rem;
+      position: absolute;
+      z-index: 1;
+      top: 120%; /* más espacio debajo del botón */
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      font-size: 0.9rem;
+      white-space: normal;
+    }
+
+    .tooltip-container:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
